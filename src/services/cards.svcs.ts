@@ -136,11 +136,36 @@ export async function balanceCard(cardId: number) {
   const card = await checkExistsCard(cardId);
   const transactions = await paymentRepository.findByCardId(cardId);
   const recharges = await rechargeRepository.findByCardId(cardId);
-  const totalPayments = transactions.reduce((sum, transaction) => sum + transaction.amount, 0);
-  const totalRecharges = recharges.reduce((sum, recharge) => sum + recharge.amount, 0);
+  const totalPayments = transactions.reduce(
+    (sum, transaction) => sum + transaction.amount,
+    0
+  );
+  const totalRecharges = recharges.reduce(
+    (sum, recharge) => sum + recharge.amount,
+    0
+  );
   const balance = totalRecharges - totalPayments;
 
   return { balance, transactions, recharges };
 }
 
 /*--------*/
+export async function blockCard(cardId: number, password: string) {
+  const card = await checkExistsCard(cardId);
+  checkExpiredDate(card.expirationDate, dateFormat);
+  if (card.isBlocked) {
+    throw { type: "conflict", message: "Card already blocked" };
+  }
+  validatePassword(password, card);
+  await cardRepository.update(cardId, { isBlocked: true });
+}
+
+export async function validatePassword(
+  password: string,
+  card: cardRepository.Card
+) {
+  const isPasswordValid = bcryptService.verify(password, card.password);
+  if (!isPasswordValid) {
+    throw { type: "unauthorized", message: "Invalid password" };
+  }
+}

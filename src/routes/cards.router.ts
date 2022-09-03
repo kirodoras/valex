@@ -5,6 +5,7 @@ import createCardSchema from "../schema/createCard.schema.js";
 import apiKeySchema from "../schema/apiKey.schema.js";
 import activateCardSchema from "../schema/activateCard.schema.js";
 import balanceCardSchema from "../schema/balanceCard.schema.js";
+import blockAndUnblockSchema from "../schema/blockAndUnblock.schema.js";
 
 const CardRouter = Router();
 const PATH = "/cards";
@@ -26,6 +27,12 @@ CardRouter.get(
   `${PATH}/balance`,
   schemaValidator.validateBody(balanceCardSchema),
   cardsController.balanceCard
+);
+
+CardRouter.patch(
+  `${PATH}/block`,
+  schemaValidator.validateBody(blockAndUnblockSchema),
+  cardsController.blockCard
 );
 
 export default CardRouter;
