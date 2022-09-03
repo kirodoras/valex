@@ -161,14 +161,14 @@ export async function blockCard(cardId: number, password: string) {
 }
 
 export async function unblockCard(cardId: number, password: string) {
-    const card = await checkExistsCard(cardId);
-    checkExpiredDate(card.expirationDate, dateFormat);
-    if (!card.isBlocked) {
-      throw { type: "conflict", message: "Card already unblocked" };
-    }
-    validatePassword(password, card);
-    await cardRepository.update(cardId, { isBlocked: false });
+  const card = await checkExistsCard(cardId);
+  checkExpiredDate(card.expirationDate, dateFormat);
+  if (!card.isBlocked) {
+    throw { type: "conflict", message: "Card already unblocked" };
   }
+  validatePassword(password, card);
+  await cardRepository.update(cardId, { isBlocked: false });
+}
 
 export async function validatePassword(
   password: string,
