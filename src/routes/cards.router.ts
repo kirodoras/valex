@@ -35,4 +35,10 @@ CardRouter.patch(
   cardsController.blockCard
 );
 
+CardRouter.patch(
+  `${PATH}/unblock`,
+  schemaValidator.validateBody(blockAndUnblockSchema),
+  cardsController.unblockCard
+);
+
 export default CardRouter;
