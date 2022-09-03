@@ -176,10 +176,7 @@ export async function unblockCard(cardId: number, password: string) {
   await cardRepository.update(cardId, { isBlocked: false });
 }
 
-export async function validatePassword(
-  password: string,
-  card: cardRepository.Card
-) {
+export function validatePassword(password: string, card: cardRepository.Card) {
   const isPasswordValid = bcryptService.verify(password, card.password);
   if (!isPasswordValid) {
     throw { type: "unauthorized", message: "Invalid password" };
