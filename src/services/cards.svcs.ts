@@ -96,7 +96,7 @@ export async function activateCard(
   password: string
 ) {
   const card = await checkExistsCard(cardId);
-  checkActiveCard(card);
+  checkInactiveCard(card);
   validateSecurityCode(cvv, card.securityCode);
   checkExpiredDate(card.expirationDate, dateFormat);
   const encodePassword: string = await bcryptService.encode(password);
@@ -126,7 +126,7 @@ export function validateSecurityCode(cvv: string, securityCode: string) {
     throw { type: "unauthorized", message: "Invalid CVV" };
 }
 
-export function checkActiveCard(card: cardRepository.Card) {
+export function checkInactiveCard(card: cardRepository.Card) {
   if (card.password !== null)
     throw { type: "conflict", message: "Card already activate" };
 }
