@@ -12,13 +12,7 @@ export async function rechargeCard(
   console.log({ amount, cardId, apiKey });
   await checksExistsApiKey(apiKey);
   const card = await cardsService.checkExistsCard(cardId);
-  checkActiveCard(card);
+  cardsService.checkActiveCard(card);
   cardsService.checkExpiredDate(card.expirationDate, dateFormat);
   await rechargeRepository.insert({ cardId, amount });
-}
-
-export function checkActiveCard(card: cardRepository.Card) {
-  if (card.password === null) {
-    throw { type: "conflict", message: "Card is not active" };
-  }
 }

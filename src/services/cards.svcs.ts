@@ -131,6 +131,12 @@ export function checkInactiveCard(card: cardRepository.Card) {
     throw { type: "conflict", message: "Card already activate" };
 }
 
+export function checkActiveCard(card: cardRepository.Card) {
+  if (card.password === null) {
+    throw { type: "conflict", message: "Card is not active" };
+  }
+}
+
 /*--------*/
 export async function balanceCard(cardId: number) {
   const card = await checkExistsCard(cardId);
