@@ -5,6 +5,8 @@ import { checksExistsApiKey } from "./companies.svcs.js";
 import { checksExistsEmployee } from "./employees.svcs.js";
 
 import * as cardRepository from "../repositories/cardRepository.js";
+import * as paymentRepository from "../repositories/paymentRepository.js";
+import * as rechargeRepository from "../repositories/rechargeRepository.js";
 import * as cryptrService from "./cryptr.svcs.js";
 import * as bcryptService from "./bcrypt.svcs.js";
 
@@ -98,7 +100,10 @@ export async function activateCard(
   validateSecurityCode(cvv, card.securityCode);
   checkExpiredDate(card.expirationDate, dateFormat);
   const encodePassword: string = await bcryptService.encode(password);
-  await cardRepository.update(cardId, { password: encodePassword, isBlocked: false });
+  await cardRepository.update(cardId, {
+    password: encodePassword,
+    isBlocked: false,
+  });
 }
 
 export async function checkExistsCard(cardId: number) {
@@ -110,7 +115,7 @@ export async function checkExistsCard(cardId: number) {
 export function checkExpiredDate(expirationDate: string, dateFormat: string) {
   const currentDate = dayjs().format(dateFormat);
   const isExpired = dayjs(expirationDate).isBefore(currentDate);
-  if(isExpired){
+  if (isExpired) {
     throw { type: "conflict", message: "Card is expired" };
   }
 }
@@ -125,3 +130,17 @@ export function checkActiveCard(card: cardRepository.Card) {
   if (card.password !== null)
     throw { type: "conflict", message: "Card already activate" };
 }
+
+/*--------*/
+export async function balanceCard(cardId: number) {
+  const card = await checkExistsCard(cardId);
+  const transactions = await paymentRepository.findByCardId(cardId);
+  const recharges = await rechargeRepository.findByCardId(cardId);
+  const totalPayments = transactions.reduce((sum, transaction) => sum + transaction.amount, 0);
+  const totalRecharges = recharges.reduce((sum, recharge) => sum + recharge.amount, 0);
+  const balance = totalRecharges - totalPayments;
+
+  return { balance, transactions, recharges };
+}
+
+/*--------*/
