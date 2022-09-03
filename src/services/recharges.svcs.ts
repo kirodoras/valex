@@ -9,7 +9,6 @@ export async function rechargeCard(
   cardId: number,
   apiKey: string
 ) {
-  console.log({ amount, cardId, apiKey });
   await checksExistsApiKey(apiKey);
   const card = await cardsService.checkExistsCard(cardId);
   cardsService.checkActiveCard(card);
