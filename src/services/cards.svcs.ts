@@ -6,6 +6,7 @@ import { checksExistsEmployee } from "./employees.svcs.js";
 
 import * as cardRepository from "../repositories/cardRepository.js";
 import * as cryptrService from "./cryptr.svcs.js";
+import * as bcryptService from "./bcrypt.svcs.js";
 
 const paymentProcessing: string = "mastercard";
 const yearsToAdd: number = 5;
@@ -34,7 +35,7 @@ export async function createCard(
     isVirtual: false,
     isBlocked: true,
     type: cardType,
-  }
+  };
 
   await cardRepository.insert(cardData);
 }
@@ -81,7 +82,46 @@ export function generateExpirationDate(yearsToAdd: number, dateFormat: string) {
 
 export function generateSecurityCode() {
   const cvvNumber: string = faker.finance.creditCardCVV();
-  console.log({cvvNumber});
+  console.log({ cvvNumber });
   const encryptedCvvNumber = cryptrService.encrypt(cvvNumber);
   return encryptedCvvNumber;
+}
+
+/*--------*/
+export async function activateCard(
+  cardId: number,
+  cvv: string,
+  password: string
+) {
+  const card = await checkExistsCard(cardId);
+  checkActiveCard(card);
+  validateSecurityCode(cvv, card.securityCode);
+  checkExpiredDate(card.expirationDate, dateFormat);
+  const encodePassword: string = await bcryptService.encode(password);
+  await cardRepository.update(cardId, { password: encodePassword, isBlocked: false });
+}
+
+export async function checkExistsCard(cardId: number) {
+  const card = await cardRepository.findById(cardId);
+  if (!card) throw { type: "not_found", message: "Card not found" };
+  return card;
+}
+
+export function checkExpiredDate(expirationDate: string, dateFormat: string) {
+  const currentDate = dayjs().format(dateFormat);
+  const isExpired = dayjs(expirationDate).isBefore(currentDate);
+  if(isExpired){
+    throw { type: "conflict", message: "Card is expired" };
+  }
+}
+
+export function validateSecurityCode(cvv: string, securityCode: string) {
+  const decryptedCvv = cryptrService.decrypt(securityCode);
+  if (decryptedCvv !== cvv)
+    throw { type: "unauthorized", message: "Invalid CVV" };
+}
+
+export function checkActiveCard(card: cardRepository.Card) {
+  if (card.password !== null)
+    throw { type: "conflict", message: "Card already activate" };
 }
