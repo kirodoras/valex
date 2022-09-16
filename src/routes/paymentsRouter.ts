@@ -1,7 +1,7 @@
 import { Router, Request, Response } from "express";
-import * as paymentsController from "../controllers/payments.controller.js";
-import * as schemaValidator from "../middlewares/schemaValidator.middleware.js";
-import paymentAtPosSchema from "../schema/paymentAtPos.schema.js";
+import * as paymentsController from "../controllers/paymentsController.js";
+import * as schemaValidator from "../middlewares/schemaValidatorMiddleware.js";
+import paymentAtPosSchema from "../schema/paymentAtPosSchema.js";
 const paymentsRouter = Router();
 const PATH = "/payments";
 

@@ -1,11 +1,11 @@
 import { Router } from "express";
-import * as cardsController from "../controllers/cards.controller.js";
-import * as schemaValidator from "../middlewares/schemaValidator.middleware.js";
-import createCardSchema from "../schema/createCard.schema.js";
-import apiKeySchema from "../schema/apiKey.schema.js";
-import activateCardSchema from "../schema/activateCard.schema.js";
-import balanceCardSchema from "../schema/balanceCard.schema.js";
-import blockAndUnblockSchema from "../schema/blockAndUnblock.schema.js";
+import * as cardsController from "../controllers/cardsController.js";
+import * as schemaValidator from "../middlewares/schemaValidatorMiddleware.js";
+import createCardSchema from "../schema/createCardSchema.js";
+import apiKeySchema from "../schema/apiKeySchema.js";
+import activateCardSchema from "../schema/activateCardSchema.js";
+import balanceCardSchema from "../schema/balanceCardSchema.js";
+import blockAndUnblockSchema from "../schema/blockAndUnblockSchema.js";
 
 const CardRouter = Router();
 const PATH = "/cards";

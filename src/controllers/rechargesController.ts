@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as rechargesService from "../services/recharges.svcs.js";
+import * as rechargesService from "../services/rechargesService.js";
 
 export async function rechargeCard(req: Request, res: Response) {
   const { amount, cardId } = req.body;

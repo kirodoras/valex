@@ -1,6 +1,6 @@
-import * as cardsService from "../services/cards.svcs.js";
+import * as cardsService from "./cardsService.js";
 import * as rechargeRepository from "../repositories/rechargeRepository.js";
-import { checksExistsApiKey } from "./companies.svcs.js";
+import { checksExistsApiKey } from "./companiesService.js";
 import * as cardRepository from "../repositories/cardRepository.js";
 const dateFormat = "MM/YY";
 

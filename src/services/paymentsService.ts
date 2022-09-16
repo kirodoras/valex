@@ -1,6 +1,6 @@
-import * as cardsService from "../services/cards.svcs.js";
+import * as cardsService from "./cardsService.js";
 import * as paymentRepository from "../repositories/paymentRepository.js";
-import * as businessService from "../services/businesses.svcs.js";
+import * as businessService from "./businessesService.js";
 
 const dateFormat = "MM/YY";
 

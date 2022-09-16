@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as cardsService from "../services/cards.svcs.js";
+import * as cardsService from "../services/cardsService.js";
 
 export async function createCard(req: Request, res: Response) {
   const { employeeId, cardType } = req.body;

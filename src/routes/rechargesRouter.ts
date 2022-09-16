@@ -1,8 +1,8 @@
 import { Router, Request, Response } from "express";
-import * as rechargesController from "../controllers/recharges.controller.js";
-import * as schemaValidator from "../middlewares/schemaValidator.middleware.js";
-import rechargeSchema from "../schema/rechargeCard.schema.js";
-import apiKeySchema from "../schema/apiKey.schema.js";
+import * as rechargesController from "../controllers/rechargesController.js";
+import * as schemaValidator from "../middlewares/schemaValidatorMiddleware.js";
+import rechargeSchema from "../schema/rechargeCardSchema.js";
+import apiKeySchema from "../schema/apiKeySchema.js";
 
 const rechargesRouter = Router();
 const PATH = "/recharges";

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as paymentsService from "../services/payments.svcs.js";
+import * as paymentsService from "../services/paymentsService.js";
 
 export async function paymentAtPos(req: Request, res: Response) {
   const { amout, cardId, password, businessId } = req.body;

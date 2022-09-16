@@ -1,14 +1,14 @@
 import { faker } from "@faker-js/faker";
 import dayjs from "dayjs";
 
-import { checksExistsApiKey } from "./companies.svcs.js";
-import { checksExistsEmployee } from "./employees.svcs.js";
+import { checksExistsApiKey } from "./companiesService.js";
+import { checksExistsEmployee } from "./employeesService.js";
 
 import * as cardRepository from "../repositories/cardRepository.js";
 import * as paymentRepository from "../repositories/paymentRepository.js";
 import * as rechargeRepository from "../repositories/rechargeRepository.js";
-import * as cryptrService from "./cryptr.svcs.js";
-import * as bcryptService from "./bcrypt.svcs.js";
+import * as cryptrService from "./cryptrService.js";
+import * as bcryptService from "./bcryptService.js";
 
 const paymentProcessing: string = "mastercard";
 const yearsToAdd: number = 5;
